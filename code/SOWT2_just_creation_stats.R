@@ -103,7 +103,7 @@ dfCreation_summary <- dfCreation_long %>%
 # work out the deficit and what's been created as a percentage of the recommendation
         Percentage = round(Achieved/CCC*100, digits = 0))
 
-
+pal <- c("#21918c","#440154")
 
 (p1 <- dfCreation_summary %>% 
     gather(., Progress, Created_ha, c("Achieved", "Deficit"), factor_key = T) %>% 
@@ -114,13 +114,15 @@ dfCreation_summary <- dfCreation_long %>%
     geom_col(aes(x = Country, y = Created_ha, fill = Progress), colour = "black", position = position_stack(reverse = TRUE))+
     guides(fill = guide_legend(reverse = TRUE))+
     #scale_fill_grey(start = 0.9, end = 0.2)+
-    scale_fill_manual(values = wes_palette("AsteroidCity1", n = 2))+
-    geom_errorbar(aes(x=Country, ymin = lower, ymax = upper, width=.2)) +    
+    #scale_fill_manual(values = wes_palette("AsteroidCity1", n = 2))+
+    #scale_fill_viridis(discrete = TRUE, option = "D", direction = -1)+
+    scale_fill_manual(values = pal)+
+    geom_errorbar(aes(x=Country, ymin = lower, ymax = upper, width=.2), colour = "white") +    
     scale_y_continuous(name = "Planting (ha/year)", limits = c(0, 38000), labels = scales::comma)+
     scale_x_discrete(name = "Region")+
     geom_text(aes(label = paste0(Percentage,"%"), y=CCC, x=Country, vjust= -0.5))+
     #ggtitle("Average annual planting 2020-2024\compared to CCC reccomendations") +
-    theme_bw()+
+    theme_classic()+
     theme(text = element_text(family = "sans", color = "#22211d"),
         plot.title = element_blank(),
         plot.subtitle = element_text(size = 12),
