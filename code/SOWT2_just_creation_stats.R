@@ -20,6 +20,7 @@ library(ggplot2)
 library(cowplot)
 library(viridis)
 library(ggpubr)
+library(wesanderson)
 
 ### read in data ---------------------------------------------------------------
 
@@ -112,12 +113,13 @@ dfCreation_summary <- dfCreation_long %>%
     ggplot()+
     geom_col(aes(x = Country, y = Created_ha, fill = Progress), colour = "black", position = position_stack(reverse = TRUE))+
     guides(fill = guide_legend(reverse = TRUE))+
-    scale_fill_grey(start = 0.9, end = 0.2)+
+    #scale_fill_grey(start = 0.9, end = 0.2)+
+    scale_fill_manual(values = wes_palette("Cavalcanti1", n = 2))+
     geom_errorbar(aes(x=Country, ymin = lower, ymax = upper, width=.2)) +    
     scale_y_continuous(name = "Planting (ha/year)", limits = c(0, 38000), labels = scales::comma)+
     scale_x_discrete(name = "Region")+
     geom_text(aes(label = paste0(Percentage,"%"), y=CCC, x=Country, vjust= -0.5))+
-    ggtitle("Average annual planting 2020-2024\ncompared to CCC reccomendations") +
+    #ggtitle("Average annual planting 2020-2024\compared to CCC reccomendations") +
     theme_bw()+
     theme(text = element_text(family = "sans", color = "#22211d"),
         plot.title = element_blank(),
