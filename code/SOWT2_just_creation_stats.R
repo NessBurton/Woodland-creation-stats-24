@@ -6,7 +6,7 @@
 ### working dirs ---------------------------------------------------------------
 
 wd <- "C:/Users/vbu/OneDrive - the Woodland Trust/Data-analysis/SoWT2-creation-stats-24" # WT laptop path
-wd <- "~/Documents/Woodland-Trust/Data-Analysis/Woodland_creation_stats_2024" # Macbook path
+#wd <- "~/Documents/Woodland-Trust/Data-Analysis/Woodland_creation_stats_2024" # Macbook path
 
 dirData <- paste0(wd,"/data-raw/")
 dirScratch <- paste0(wd,"/data-scratch/")
@@ -135,7 +135,7 @@ pal <- c("#21918c","#440154")
         axis.title.x =  element_blank(),
         legend.position = "right"))
 
-ggsave(plot = p1 , paste0(dirFigs,"creation_rates.png"), width = 6, height = 4)
+ggsave(plot = p1 , paste0(dirFigs,"creation_rates.jpg"), width = 6, height = 4)
 #library(svglite)
 #ggsave(plot = p1 , paste0(dirFigs,"creation_rates.svg"), width = 6, height = 4)
 
