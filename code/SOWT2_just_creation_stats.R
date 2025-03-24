@@ -6,6 +6,8 @@
 ### working dirs ---------------------------------------------------------------
 
 wd <- "C:/Users/vbu/OneDrive - the Woodland Trust/Data-analysis/SoWT2-creation-stats-24" # WT laptop path
+wd <- "~/Documents/Woodland-Trust/Data-Analysis/Woodland_creation_stats_2024" # Macbook path
+
 dirData <- paste0(wd,"/data-raw/")
 dirScratch <- paste0(wd,"/data-scratch/")
 dirOut <- paste0(wd,"/data-out/")
@@ -19,6 +21,7 @@ library(ggplot2)
 library(cowplot)
 library(viridis)
 library(ggpubr)
+library(wesanderson)
 
 ### read in data ---------------------------------------------------------------
 
@@ -101,7 +104,7 @@ dfCreation_summary <- dfCreation_long %>%
 # work out the deficit and what's been created as a percentage of the recommendation
         Percentage = round(Achieved/CCC*100, digits = 0))
 
-
+pal <- c("#21918c","#440154")
 
 (p1 <- dfCreation_summary %>% 
     gather(., Progress, Created_ha, c("Achieved", "Deficit"), factor_key = T) %>% 
@@ -111,27 +114,30 @@ dfCreation_summary <- dfCreation_long %>%
     ggplot()+
     geom_col(aes(x = Country, y = Created_ha, fill = Progress), colour = "black", position = position_stack(reverse = TRUE))+
     guides(fill = guide_legend(reverse = TRUE))+
-    scale_fill_grey(start = 0.9, end = 0.2)+
-    geom_errorbar(aes(x=Country, ymin = lower, ymax = upper, width=.2)) +    
+    #scale_fill_grey(start = 0.9, end = 0.2)+
+    #scale_fill_manual(values = wes_palette("AsteroidCity1", n = 2))+
+    #scale_fill_viridis(discrete = TRUE, option = "D", direction = -1)+
+    scale_fill_manual(values = pal)+
+    geom_errorbar(aes(x=Country, ymin = lower, ymax = upper, width=.2), colour = "white") +    
     scale_y_continuous(name = "Planting (ha/year)", limits = c(0, 38000), labels = scales::comma)+
     scale_x_discrete(name = "Region")+
     geom_text(aes(label = paste0(Percentage,"%"), y=CCC, x=Country, vjust= -0.5))+
-    ggtitle("Average annual planting 2020-2024\ncompared to CCC reccomendations") +
-    theme_bw()+
+    #ggtitle("Average annual planting 2020-2024\compared to CCC reccomendations") +
+    theme_classic()+
     theme(text = element_text(family = "sans", color = "#22211d"),
         plot.title = element_blank(),
         plot.subtitle = element_text(size = 12),
         legend.title = element_blank(),
         legend.text =  element_text(size = 12),
-        axis.text.x = element_text(size = 12, angle = 90),
+        axis.text.x = element_text(size = 12, angle = 45, vjust = 0.5),
         axis.text.y = element_text(size = 10),
         axis.title.y =  element_text(size = 12, vjust = 2.2 ),
         axis.title.x =  element_blank(),
         legend.position = "right"))
 
-ggsave(plot = p1 , paste0(dirFigs,"creation_rates.jpg"), width = 6, height = 4)
-library(svglite)
-ggsave(plot = p1 , paste0(dirFigs,"creation_rates.svg"), width = 6, height = 4)
+ggsave(plot = p1 , paste0(dirFigs,"creation_rates.png"), width = 6, height = 4)
+#library(svglite)
+#ggsave(plot = p1 , paste0(dirFigs,"creation_rates.svg"), width = 6, height = 4)
 
 
 # save data summary
